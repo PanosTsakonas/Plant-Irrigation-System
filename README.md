@@ -74,4 +74,4 @@ This part is the TLDR version of my code. Firstly as mentioned in the soil moist
 
 # Conclusion
 
-To conclude firstly i hope that you found my explantions helpful. Secondly the whole project, because it consists of cheap sensors costs roughly 25 euros and i got a junction box for another 15 euros. The cost of the valve depends on what you are getting, but I already had an old one and that was one of the reasons that i begun this project. So a rough estimate is that you can make the whole project with 70 euros, which is quite nice and cheap.
+To conclude firstly i hope that you found my explantions helpful. Secondly the whole project, because it consists of cheap sensors costs roughly 25 euros and i got a junction box for another 15 euros. The cost of the valve depends on what you are getting, but I already had an old one and that was one of the reasons why i begun this project. So a rough estimate is that you can make the whole project with 70 euros, which is quite nice and cheap.
