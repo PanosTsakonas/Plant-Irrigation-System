@@ -1,6 +1,6 @@
 # Plant Irrigation System
 
-This project was build for fun and it uses the NodeMcu 32s for the host microcontroller, alongside a waveshare soil moisture sensor 
+This project was originally designed for personal use. It comprises of a NodeMcu 32s for the host microcontroller, alongside a waveshare soil moisture sensor 
 a DHT22 temperature/humidity sensor and a valve connected to the water supply. This projects aims to automate the watering of plants using the above mentioned sensors
 add WiFi to get the actual date/time and send the data from the sensors to a Thingspeak webpage for monitoring the state of the garden.
 The data sent are the temperature, air humidity, soil humidity expressed as a percentage, soil humidity raw sensor value and the number
