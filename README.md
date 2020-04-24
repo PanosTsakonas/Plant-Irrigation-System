@@ -42,9 +42,9 @@ I have uploaded a JPEG file with a Fritzing schematic of my Hookup.
 
 # Soil Moisture Sensor
 
-Connect the VCC to ESP32 pin 18
-Connect the GND to a ground
-Connect the Aout/SIG to ESP32 pin 36
+Connect the VCC to ESP32 pin 18.
+Connect the GND to a ground.
+Connect the Aout/SIG to ESP32 pin 36.
 The reason why we connect the VCC of this sensor to pin 18 is that we control when the sensor is getting data. These types of soil moisture sensor tend to stop working quite fast (they cost around 5-6 euros so you can understand why) and controlling the power on time can increase the life expectancy of the module. A word of caution is that when you use these types of sensors the output value is just an analog reading. You basically get a number that corresponds to the resistance of the two metal rods of the sensor. The more water between the two the higher the reading. So in order to get percentage value you have to calibrate them beforehand. Calibration is really easy and in the code I have added a line for "auto" calibration. That means that from my initial calibration i got a reading value when the sensor was completely soaked in water of around 
 1812. I used this value to start the system but when the output of the sensor is hgher than that value, i compensate for that by taking the mean of the two. That's my "auto-calibration". That value is saved as an RTC_DATA_ATTR variable meaning that it won't be lost during deep sleep but when the system is restarted either by taking the plug out or from a power outage then that value is lost. Perhaps you can save that value to the ESP32 EEPROM and never worry about that but I didn't know how to do it and honestly it wasn't such a big deal; but there is also this option if anyone wants to explore it.
 
@@ -52,16 +52,16 @@ The reason why we connect the VCC of this sensor to pin 18 is that we control wh
 
 To fascilitate the reader imagine that you are holding the DHT22 with the grid layout facing you. Then the most left pin is the VCC and the most right pin is the Ground.
 
-Connect VCC pin (most left) to ESP32 3.3 VDC
-Connect the digital singal pin of the DHT22 to ESP32 pin 23 and you have to add a 10 KOhm resistor that connects the 3.3 VDC with the digital signal pin as well. (See my schematic for more info)
-The next pin is not connected
+Connect VCC pin (most left) to ESP32 3.3 VDC.
+Connect the digital singal pin of the DHT22 to ESP32 pin 23 and you have to add a 10 KOhm resistor that connects the 3.3 VDC with the digital signal pin as well. (See my schematic for more info).
+The next pin is not connected.
 Connect the ground pin (most right) to ESP32 ground.
 
 # 5 VDC 1 channel relay
 
-Connect the signal pin of the realy to ESP32 pin 13
-Connect the Ground replay pin to ESP32 ground 
-Connect the Power realy pin to ESP32 5VDC
+Connect the signal pin of the realy to ESP32 pin 13.
+Connect the Ground replay pin to ESP32 ground.
+Connect the Power realy pin to ESP32 5VDC.
 
 The way i have setup the code for the relay switch you have to use the common and normal open as exits to open and close the
 valve.
