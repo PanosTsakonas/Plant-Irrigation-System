@@ -60,7 +60,7 @@ delay(200);
 pinMode(wa,OUTPUT);
 digitalWrite(wa,HIGH);
 timeClient.begin();
-timeClient.setTimeOffset(3*3600);
+timeClient.setTimeOffset(3*3600); // change your time offset based on where you live. The time zone is GMT so you have to know what zone you are in
 pinMode(soilinput,OUTPUT);
 digitalWrite(soilinput,LOW);
 digitalWrite(LED_BUILTIN,HIGH);
@@ -90,10 +90,10 @@ Serial.println(mo);
 delay(2000);
 if(l==1)
 {
- // if(timeStamp==17 and k==48)
- if(timeStamp==17)
+ if(timeStamp==17 and k==48)
+
 {
- // k=0;
+  k=0;
 digitalWrite(soilinput,HIGH);
 delay(200);
 air_hum=0;
