@@ -382,6 +382,10 @@ if(timeStamp!=17 or k<48)
                "Connection: close\r\n\r\n");
   client.stop();
 delay(60000);
+ if(k==48)
+ {
+  esp_deep_sleep(microsec*3);
+ }
  timeStamp1=timeClient.getMinutes();
     if(timeStamp1<=30)
     timeStamp1=1800-60*timeStamp1+20;
