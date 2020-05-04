@@ -14,8 +14,7 @@ The board is powered from a normal plug of 220 VAC and through a transformer and
 and a ground. This makes it ideal to use with any plug in your garden!
 
 Once you set your WiFi SSID and Password you have to create a new channel on ThingSpeak. Once you do that copy the Write API key to the
-code and you are set! You can download a ThnigSpeak widget on your phone (I know it works for Andriod devices haven't try the Apple phones yet)
-and you can see the sensor readings as soon as they are uploaded to the ThingSpeak channel!
+code and you are set! You can download a ThnigSpeak widget on your Andriod device and for the Apple phones and tablets there are some free applications like Thingview where you can see the logged data in charts. Once you have them installed on your device you can see the sensor readings as soon as they are uploaded to the ThingSpeak channel!
 
 Once you set everything and all the sensors are connected then you can turn the system on. The principal of the system is that it connects to the Internet
 get the time in GMT (you have to modify the time offset for your country) and by default the system will start getting sensor data once the time is 17:00.
