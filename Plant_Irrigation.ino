@@ -19,7 +19,7 @@ DHT dht(dhtpin,DHT22);
 float air_hum=0;
 float temp=0;
 float soil_hum=0;
-RTC_DATA_ATTR int n=0;
+int n=0;
 RTC_DATA_ATTR float k=0;
 RTC_DATA_ATTR int l=0;
 RTC_DATA_ATTR float a;
@@ -40,7 +40,7 @@ int days=3600;
 float x[5];
 float soil_hum1=0;
 float soil_hum2=0;
-int d=0;
+
 void setup() 
 {
 Wire.begin();
