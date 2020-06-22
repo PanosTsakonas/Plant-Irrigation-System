@@ -6,7 +6,7 @@
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 const char* ssid="Enter your router's SSID name";
-const char* pass= "Enter your routers password";
+const char* pass= "Enter your router's password";
 WiFiClient  client;
 const char* thingspeak_key = "Enter your thingspeak's Write API key";
 #define dhtpin 23
