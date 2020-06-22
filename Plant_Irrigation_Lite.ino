@@ -185,9 +185,7 @@ WiFiClient client;
   url += air_hum;
   url += "&field3=";
    url += soil_hum;
-   url += "&field4=";
-   url += n;
-    url += "&field5=";
+    url += "&field4=";
    url += soil_hum1;
  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                "Host: api.thingspeak.com\r\n" + 
