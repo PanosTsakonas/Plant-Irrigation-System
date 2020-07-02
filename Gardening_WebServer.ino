@@ -109,12 +109,12 @@ void loop() {
    server.handleClient();
   if(pinstatus)
   {
-    digitalWrite(wa, HIGH);
+    digitalWrite(wa, LOW);
       digitalWrite(LED_BUILTIN, HIGH);
   }
   else
   {
-    digitalWrite(wa, LOW);
+    digitalWrite(wa, HIGH);
   digitalWrite(LED_BUILTIN, LOW);
   }
 timeStamp=timeClient.getHours();
