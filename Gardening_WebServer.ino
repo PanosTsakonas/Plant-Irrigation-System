@@ -47,6 +47,8 @@ int days=3600;
 float x[2];
 float soil_hum1=0;
 float soil_hum2=0;
+TaskHandle_t Task1;
+
 void setup() {
 Wire.begin();
 Serial.begin(9600);
@@ -71,6 +73,16 @@ WiFi.softAP(ssid1, password1);
   server.onNotFound(handle_NotFound);
   
   server.begin();
+
+   xTaskCreatePinnedToCore(
+                    irrigation,   /* Task function. */
+                    "Task1",     /* name of task. */
+                    10000,       /* Stack size of task */
+                    NULL,        /* parameter of the task */
+                    1,           /* priority of the task */
+                    &Task1,      /* Task handle to keep track of created task */
+                    0);          /* pin task to core 0 */                  
+  delay(500); 
   pinMode(wa,OUTPUT);
 digitalWrite(wa,HIGH);
 timeClient.begin();
@@ -117,7 +129,100 @@ void loop() {
     digitalWrite(wa, HIGH);
   digitalWrite(LED_BUILTIN, LOW);
   }
-timeStamp=timeClient.getHours();
+}
+
+
+void handle_systemoff() {
+  pinstatus = LOW;
+  digitalWrite(wa,HIGH);
+  digitalWrite(LED_BUILTIN,LOW);
+  digitalWrite(soilinput,HIGH);
+   for(i=0;i<=20;i++)
+  {
+    kol=kol+analogRead(soil)*100/a;
+  }
+  while(digitalRead(wa)==0)
+{ 
+digitalWrite(wa,HIGH);
+}
+  kol=kol/20;
+  s=+kol;
+  kol=0;
+  Serial.println("Irrigation System Status: OFF");
+  server.send(200, "text/html", SendHTML(false)); 
+}
+void handle_NotFound(){
+  server.send(404, "text/plain", "Not found");
+}
+
+void handle_systemon() {
+  pinstatus = HIGH;
+  digitalWrite(wa,LOW);
+  digitalWrite(LED_BUILTIN,HIGH);
+  dht.begin();
+  temp=dht.readTemperature();
+  air_hum=dht.readHumidity();
+  te=+temp;
+  ai=+air_hum;
+  Serial.println("Irrigation System Status: ON");
+  
+  server.send(200, "text/html", SendHTML(true)); 
+}
+void handle_OnConnect() {
+  pinstatus = LOW;
+  digitalWrite(wa,HIGH);
+  digitalWrite(LED_BUILTIN,LOW);
+  digitalWrite(soilinput,HIGH);
+  for(i=0;i<=20;i++)
+  {
+    kol=kol+analogRead(soil)*100/a;
+  }
+  while(digitalRead(wa)==0)
+{ 
+digitalWrite(wa,HIGH);
+}
+  kol=kol/20;
+  s=+kol;
+  kol=0;
+  Serial.println("Irrigation System Status: OFF");
+  server.send(200, "text/html", SendHTML(pinstatus)); 
+}
+String SendHTML(uint8_t pinst)
+{
+  String ptr = "<!DOCTYPE html> <html>\n";
+  ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
+  ptr +="<title>Irrigtion System</title>\n";
+  ptr +="<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
+  ptr +="body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;} h3 {color: #444444;margin-bottom: 50px;}\n";
+  ptr +=".button {display: block;width: 80px;background-color: #3498db;border: none;color: white;padding: 13px 30px;text-decoration: none;font-size: 25px;margin: 0px auto 35px;cursor: pointer;border-radius: 4px;}\n";
+  ptr +=".button-on {background-color: #3498db;}\n";
+  ptr +=".button-on:active {background-color: #2980b9;}\n";
+  ptr +=".button-off {background-color: #34495e;}\n";
+  ptr +=".button-off:active {background-color: #2c3e50;}\n";
+  ptr +="p {font-size: 09px;color: #888;margin-bottom: 10px;}\n";
+  ptr +="</style>\n";
+  ptr +="</head>\n";
+  ptr +="<body>\n";
+  ptr +="<h3>Soil Humidity: "+s+" %"+"</h3>\n";
+  
+  if(pinst)
+  {ptr +="<p>System Status: ON</p><a class=\"button button-off\" href=\"/systemoff\">OFF</a>\n";
+   ptr+="<h3>Temperature: "+te+" C"+"</h3>\n";  
+   ptr +="<h3>Air Humidity: "+ai+" %"+"</h3>\n";
+  }
+  else
+  {ptr +="<p>System Status: OFF</p><a class=\"button button-on\" href=\"/systemon\">ON</a>\n";}
+  ptr +="<h3>Soil Humidity: "+s+" %"+"</h3>\n";
+  ptr +="</body>\n";
+  ptr +="</html>\n";
+  return ptr;
+}
+
+void irrigation( void * parameter)
+{
+  for(;;)
+  {
+   timeStamp=timeClient.getHours();
 if (timeStamp==16)
 {
   l=0;
@@ -127,6 +232,7 @@ if(timeStamp==17)
   if(l==0)
   {
   digitalWrite(soilinput,HIGH);
+  digitalWrite(LED_BUILTIN,HIGH);
 delay(200);
 air_hum=0;
 temp=0;
@@ -228,6 +334,7 @@ WiFiClient client;
   delay(500);
 }
 }
+
 WiFi.begin(ssid,pass);
   while (WiFi.status() != WL_CONNECTED) {
   delay(500);
@@ -235,92 +342,7 @@ WiFi.begin(ssid,pass);
   delay(1000);
   }
   Serial.println("Connected to WiFi");
-delay(2000);
-}
-
-
-void handle_systemoff() {
-  pinstatus = LOW;
-  digitalWrite(wa,HIGH);
-  digitalWrite(LED_BUILTIN,LOW);
-  digitalWrite(soilinput,HIGH);
-   for(i=0;i<=20;i++)
-  {
-    kol=kol+analogRead(soil)*100/a;
+delay(2000); 
   }
-  while(digitalRead(wa)==0)
-{ 
-digitalWrite(wa,HIGH);
-}
-  kol=kol/20;
-  s=+kol;
-  kol=0;
-  Serial.println("Irrigation System Status: OFF");
-  server.send(200, "text/html", SendHTML(false)); 
-}
-void handle_NotFound(){
-  server.send(404, "text/plain", "Not found");
-}
-
-void handle_systemon() {
-  pinstatus = HIGH;
-  digitalWrite(wa,LOW);
-  digitalWrite(LED_BUILTIN,HIGH);
-  dht.begin();
-  temp=dht.readTemperature();
-  air_hum=dht.readHumidity();
-  te=+temp;
-  ai=+air_hum;
-  Serial.println("Irrigation System Status: ON");
-  
-  server.send(200, "text/html", SendHTML(true)); 
-}
-void handle_OnConnect() {
-  pinstatus = LOW;
-  digitalWrite(wa,HIGH);
-  digitalWrite(LED_BUILTIN,LOW);
-  digitalWrite(soilinput,HIGH);
-  for(i=0;i<=20;i++)
-  {
-    kol=kol+analogRead(soil)*100/a;
-  }
-  while(digitalRead(wa)==0)
-{ 
-digitalWrite(wa,HIGH);
-}
-  kol=kol/20;
-  s=+kol;
-  kol=0;
-  Serial.println("Irrigation System Status: OFF");
-  server.send(200, "text/html", SendHTML(pinstatus)); 
-}
-String SendHTML(uint8_t pinst)
-{
-  String ptr = "<!DOCTYPE html> <html>\n";
-  ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
-  ptr +="<title>Irrigtion System</title>\n";
-  ptr +="<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
-  ptr +="body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;} h3 {color: #444444;margin-bottom: 50px;}\n";
-  ptr +=".button {display: block;width: 80px;background-color: #3498db;border: none;color: white;padding: 13px 30px;text-decoration: none;font-size: 25px;margin: 0px auto 35px;cursor: pointer;border-radius: 4px;}\n";
-  ptr +=".button-on {background-color: #3498db;}\n";
-  ptr +=".button-on:active {background-color: #2980b9;}\n";
-  ptr +=".button-off {background-color: #34495e;}\n";
-  ptr +=".button-off:active {background-color: #2c3e50;}\n";
-  ptr +="p {font-size: 09px;color: #888;margin-bottom: 10px;}\n";
-  ptr +="</style>\n";
-  ptr +="</head>\n";
-  ptr +="<body>\n";
-  ptr +="<h3>Soil Humidity: "+s+" %"+"</h3>\n";
-  
-  if(pinst)
-  {ptr +="<p>System Status: ON</p><a class=\"button button-off\" href=\"/systemoff\">OFF</a>\n";
-   ptr+="<h3>Temperature: "+te+" C"+"</h3>\n";  
-   ptr +="<h3>Air Humidity: "+ai+" %"+"</h3>\n";
-  }
-  else
-  {ptr +="<p>System Status: OFF</p><a class=\"button button-on\" href=\"/systemon\">ON</a>\n";}
-  ptr +="<h3>Soil Humidity: "+s+" %"+"</h3>\n";
-  ptr +="</body>\n";
-  ptr +="</html>\n";
-  return ptr;
+ 
 }
