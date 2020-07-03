@@ -42,7 +42,6 @@ int wa=13;
 int soil=36;
 float kol=0;
 #define soilinput 18
-int microsec = 1000000;
 int days=3600;
 float x[2];
 float soil_hum1=0;
