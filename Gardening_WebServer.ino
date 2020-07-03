@@ -131,11 +131,13 @@ void loop() {
 }
 
 
+
 void handle_systemoff() {
   pinstatus = LOW;
   digitalWrite(wa,HIGH);
   digitalWrite(LED_BUILTIN,LOW);
   digitalWrite(soilinput,HIGH);
+  kol=0;
    for(i=0;i<=20;i++)
   {
     kol=kol+analogRead(soil)*100/a;
@@ -146,7 +148,6 @@ digitalWrite(wa,HIGH);
 }
   kol=kol/20;
   s=+kol;
-  kol=0;
   Serial.println("Irrigation System Status: OFF");
   server.send(200, "text/html", SendHTML(false)); 
 }
@@ -159,6 +160,8 @@ void handle_systemon() {
   digitalWrite(wa,LOW);
   digitalWrite(LED_BUILTIN,HIGH);
   dht.begin();
+  temp=0;
+  air_hum=0;
   temp=dht.readTemperature();
   air_hum=dht.readHumidity();
   te=+temp;
@@ -172,6 +175,7 @@ void handle_OnConnect() {
   digitalWrite(wa,HIGH);
   digitalWrite(LED_BUILTIN,LOW);
   digitalWrite(soilinput,HIGH);
+  kol=0;
   for(i=0;i<=20;i++)
   {
     kol=kol+analogRead(soil)*100/a;
@@ -182,7 +186,6 @@ digitalWrite(wa,HIGH);
 }
   kol=kol/20;
   s=+kol;
-  kol=0;
   Serial.println("Irrigation System Status: OFF");
   server.send(200, "text/html", SendHTML(pinstatus)); 
 }
