@@ -51,7 +51,8 @@ TaskHandle_t Task1;
 void setup() {
 Wire.begin();
 Serial.begin(9600);
-delay(500);
+delay(500);	
+WiFi.mode(WIFI_AP_STA); 
 WiFi.begin(ssid,pass);
   while (WiFi.status() != WL_CONNECTED) {
   delay(500);
