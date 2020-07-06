@@ -1,6 +1,7 @@
 #include<Wire.h>
 #include<WiFi.h>
 #include <WebServer.h>
+#include <WiFiClient.h>
 #include <DHT.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
