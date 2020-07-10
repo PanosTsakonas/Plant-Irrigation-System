@@ -14,7 +14,7 @@ const char* password1= "12345678";  //Enter Password for Web Server here
 /* Put IP Address details */
 IPAddress local_ip(192,168,1,1);
 IPAddress gateway(192,168,1,1);
-IPAddress subnet(255,255,255,0);
+IPAddress subnet(255,255,255,252);
 WebServer server(80);
 WiFiClient  client;
 const char* thingspeak_key = "Enter your thingspeak's Write API key";
