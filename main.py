@@ -58,7 +58,16 @@ while True:
        soil_inp.value(0)
        sleep(30)
      wa.value(1)
-     sensor.measure()
+     retry = 0
+     while retry < 3:
+        try:
+            sensor.measure()
+            break
+        except:
+            retry = retry + 1
+            print(".", end = "")
+
+     print("")       
      temp=sensor.temperature()
      air_hum=sensor.humidity()
      soil_inp.value(1)    
