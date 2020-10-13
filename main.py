@@ -4,7 +4,7 @@ import network
 import machine
 from ntptime import settime
 import utime
-from dht import DHT22
+import dht 
 import urequests
 import gc
 gc.collect()
@@ -23,7 +23,7 @@ api_key='IFTTT API KEY'
 wa=Pin(13,Pin.IN)
 soil_inp=Pin(18, Pin.OUT)
 soil=ADC(Pin(36))
-sensor=DHT22(Pin(23))
+sensor=dht.DHT22(machine.Pin(23))
 soil.atten(ADC.ATTN_11DB) #set 11dB input attenuation (voltage range roughly 0.0v - 3.6v)
 soil_inp.value(0)
 wa.value(1)
