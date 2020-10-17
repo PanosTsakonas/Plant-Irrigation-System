@@ -85,7 +85,7 @@ while True:
      sleep(1)
      ts=utime.localtime()
      minutes1=ts[4]
-     machine.deepsleep(sec*(3600*24-(60-minutes1)*60)*n)
+     machine.deepsleep(sec*(3600*24*n-(60-minutes1)*60))
  else:
      if hour<=16:
          h_dif=16-hour
