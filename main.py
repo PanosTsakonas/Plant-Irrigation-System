@@ -70,12 +70,11 @@ if __name__ == "__main__":
             soil_hum1= soil.read()
             soil_inp.value(0)
             while soil_hum1/2000 <=80:
-            wa.value(0)
-            soil_inp.value(1)    
-            soil_hum1= soil.read()
-            soil_inp.value(0)
-            sleep(30)
-            wa.value(1)
+             wa.value(0)
+             soil_inp.value(1)    
+             soil_hum1= soil.read()
+             soil_inp.value(0)
+             sleep(30)
             retry = 0
             while retry < 3:
             try:
