@@ -9,13 +9,14 @@ import utime
 import dht 
 import urequests
 import gc
+import esp
 ###############
 
 ## Constants
 __STANDAR_CD = 3
 
 ## Variable decleration
-
+esp.osdebug(None)
 gc.collect()
 sec=1000
 settime()
@@ -52,7 +53,7 @@ def setupwifi():
 ########################
 
 ## Main ##
-if __name__ == "__main__":
+try:
     setupwifi()
     while True:
         ts=utime.localtime()
@@ -61,11 +62,11 @@ if __name__ == "__main__":
         minutes=ts[4]
         month=ts[1]
         print(hour,minutes,month)
-        if month<=9 and month>=5:
+        if month in range(5,9):
             n=1
         else:
             n=2
-        if hour==17:
+        if hour==17 and minutes <=15:
             soil_inp.value(1)    
             soil_hum1= soil.read()
             soil_inp.value(0)
@@ -114,4 +115,5 @@ if __name__ == "__main__":
                 m_dif=60-minutes
             print("Going to sleep for",h_dif,"hours and",m_dif,"minutes")
             machine.deepsleep(sec*(60*m_dif+3600*h_dif))
-    pass
+except (RuntimeError, TypeError, NameError, OSError):
+    machine.deepsleep(sec*10)
